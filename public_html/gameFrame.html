@@ -49,6 +49,11 @@
             sendMessage(obj);
         }
 
+        function exitRoom(){
+            var data = {method:"exitRoom", user: userId};
+            sendMessage(data, exitRoomHandler);
+        }
+
     </script>
 
 </head>
@@ -66,8 +71,8 @@
 </div>
 
 <div id="joinGameButton" style="display:none">
-    <input type="button" name="throw" value="Сесть за стол" onclick="joinGame();"/>
-
+    <input type="button" name="throw" value="Присоединиться к игре" onclick="joinGame();"/>
+    <input type="button" name="throw" value="Покинуть комнату" onclick="exitRoom();"/>
 </div>
 
 <div id="adminPanel" style="display:none">

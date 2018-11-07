@@ -83,8 +83,6 @@ function onRoomCreateHandler(event){
 function exitRoom(){
     var data = {method:"exitRoom", user: user};
     sendMessage(data, exitRoomHandler);
-
-
 }
 
 function exitRoomHandler(event){

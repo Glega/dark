@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import packets.gamePackets.GameMessagePackets;
 import packets.gamePackets.Packet;
 import packets.gamePackets.RemoveUserHandler;
+import sockets.GameSocket;
 import util.Debugger;
 
 import java.util.*;
@@ -23,6 +24,9 @@ public class Room {
     private transient HashMap<String, UserProfile> users;
     private transient List<UserProfile> players;
     private transient GameLogic gameLogic;
+
+    private int usersCount = 0;
+    private int playersCount = 0;
 
     private int maxPlayers = 3;
 
@@ -44,6 +48,7 @@ public class Room {
         if(users.get(userProfile.getLogin()) != null ) return;
         users.put(userProfile.getLogin(), userProfile);
         userProfile.setRoom(this);
+        usersCount++;
     }
 
     public void addPlayer(UserProfile userProfile){
@@ -56,6 +61,7 @@ public class Room {
             Packet<String, String> p = new Packet<>(createPacket("onGameStartHandler", userProfile.getLogin(), new String[]{"k", "kl"}));
             sendMessage(p.toJSON());
         }
+        playersCount++;
     }
 
     public void removeUser(String login){
@@ -65,6 +71,8 @@ public class Room {
         p.put("user", login);
         Packet packet = new Packet(p);
         sendMessage(packet.toJSON());
+        if(users.size() == 0) RoomService.getRoomService().removeRoom(this);
+        usersCount--;
     }
 
 
@@ -91,7 +99,19 @@ public class Room {
     }
 
     public void sendMessage(String JSONMsg){
-        gameMessagePackets.sendMessage(this.roomId, JSONMsg);
+
+        for(Map.Entry<String, UserProfile> entry : users.entrySet()){
+            try {
+                GameSocket socket = entry.getValue().getSocket();
+                if(socket != null) socket.sendString(JSONMsg);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        //old
+        //gameMessagePackets.sendMessage(this.roomId, JSONMsg);
+
     }
 
 
@@ -101,6 +121,8 @@ public class Room {
         //удалении стола, как-то убирать из строки информацию
         return "fuck";
     }
+
+
 
     public void setRoomId(String roomId){this.roomId = roomId;}
 

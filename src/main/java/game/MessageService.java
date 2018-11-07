@@ -80,7 +80,7 @@ public class MessageService {
                 break;
 
 
-            case "createRoom":
+            case "createRoom":      //create room and send to user room id
                 room = roomService.createRoom(login);
                 room.setGameMessagePackets(messageSender);
 
@@ -184,16 +184,7 @@ public class MessageService {
     public void sendMessageTo(String roomId, String data){
         Room room = roomService.getRoom(roomId);
         if(room == null) return;
-        //Debugger.debug("Try to send message to roomId:" + roomId + "; message = " + data);
-        for(Map.Entry<String, UserProfile> entry : room.getUsers().entrySet()){
-            try {
-                GameSocket socket = entry.getValue().getSocket();
-                if(socket != null) socket.sendString(data);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
+        room.sendMessage(data);
     }
 
     public void add(GameSocket webSocket, String uid) {

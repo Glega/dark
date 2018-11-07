@@ -34,6 +34,10 @@ public class RoomService {
         return room;
     }
 
+    public void removeRoom(Room room){
+        rooms.remove(room.getRoomId());
+    }
+
     public void registerUser(UserProfile user, String roomId){//Put user and socket to room
         Room room = rooms.get(roomId);
     }

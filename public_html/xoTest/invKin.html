@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Jopa</title> 
+	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+	<script src = "Neuroevolution.js"></script>
+	
+	<script type="text/javascript" src="nn/nn.js"></script>
+    <script type="text/javascript" src="nn/matrix.js"></script>
+    <script type="text/javascript" src="inverseKinematic/ga.js"></script>    
+	<script type="text/javascript" src="inverseKinematic/joint.js"></script>
+	<script type="text/javascript" src="inverseKinematic/arm.js"></script>
+    <script type="text/javascript" src="invMain.js"></script>
+	<script type="text/javascript" src="js/boomer.js"></script>
+</head>
+
+
+<body onload="init()">
+
+<canvas id="canvas"></canvas>
+<div id="score"></div>
+<div>
+<span><input name="saveData" id="saveData" type="button" value="Save_Data" onclick="saveData();"/></span>
+<span><input name="pause" id="pause" type="button" value="pause" onclick="pause();"/></span>
+<span><input name="step" id="step" type="button" value="step" onclick="update(1);"/></span>
+
+<span><input name="step2" id="step2" type="button" value="Moving target" onclick="changeMode(1);"/></span>
+<span><input name="step22" id="step33" type="button" value="Rndom target" onclick="changeMode(2);"/></span>
+<span><input name="step222" id="step33" type="button" value="Mouse target" onclick="changeMode(3);"/></span>
+</div>
+</body>
+
+
+</html>

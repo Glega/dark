@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Тест крестиков ноликов</title>
+	
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+    <script type="text/javascript" src="nn/nn.js"></script>
+    <script type="text/javascript" src="nn/matrix.js"></script>
+    <script type="text/javascript" src="ga.js"></script>
+    <script type="text/javascript" src="table.js"></script>
+    <script type="text/javascript" src="player.js"></script>
+	<script type="text/javascript" src="nn/ai.js"></script>
+    <script type="text/javascript" src="mainFrame.js"></script>
+
+</head>
+
+
+<body onload="init()">
+<span><input name="goButton" id="startButton" type="button" value="RestartGame" onclick="Trestart();"/></span><span><input name="goButton" id="startButton" type="button" value="NextPlayer()" onclick="nextPlayer();"/></span><span><input name="goButton" id="startButton" type="button" value="Step" onclick="update(1);"/></span><span><input name="goButton" id="startButton" type="button" value="Pause" onclick="pause();"/></span>
+<div id="score"></div>
+<div id="arena">
+	<table>
+	<tr>
+	
+	<td style="padding-bottom:26895px">
+	<span>
+	
+			<table border = "1" style="width:90px; height:90px">
+			<tbody>
+			<tr>
+				<td id="0_0" onclick="userClick(this);">&nbsp;</td>
+				<td id="0_1" onclick="userClick(this);">&nbsp;</td>
+				<td id="0_2" onclick="userClick(this);">&nbsp;</td>
+            </tr>
+			<tr>
+				<td id="1_0" onclick="userClick(this);">&nbsp;</td>
+				<td id="1_1" onclick="userClick(this);">&nbsp;</td>
+				<td id="1_2" onclick="userClick(this);">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id="2_0" onclick="userClick(this);">&nbsp;</td>
+				<td id="2_1" onclick="userClick(this);">&nbsp;</td>
+				<td id="2_2" onclick="userClick(this);">&nbsp;</td>   
+			</tr>
+		
+        </tbody>
+    </table>
+	</span>
+	</td>
+	<td>
+	<span>
+
+    <table style="width:100px">
+        <tbody>
+        <tr>
+			<td id="round1_9">&nbsp;</td>
+            <td id="round1_8"></td>
+            <td id="round1_7">&nbsp;</td>
+            <td id="round1_6">&nbsp;</td>
+            <td id="round1_5">&nbsp;</td>
+            <td id="round1_4">&nbsp;</td>
+            <td id="round1_3">&nbsp;</td>
+            <td id="round1_2">&nbsp;</td>
+            <td id="round1_1">&nbsp;</td>
+            <td id="round1_0">&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+</span>
+</td></tr>
+</table>
+</div>
+</body>
+
+
+</html>

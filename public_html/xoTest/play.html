@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Игра</title>
+	
+    <script type="text/javascript" src="nn/ai.js"></script>
+    <script type="text/javascript" src="nn/nn.js"></script>
+    <script type="text/javascript" src="nn/matrix.js"></script>
+	<script type="text/javascript" src="game.js"></script>
+	
+    
+
+</head>
+
+
+<body>
+<div id="score"></div>
+<div id="arena">
+    <table border = "1" style="width:90px; height:90px">
+        <tbody>
+        <tr>
+			<td id="0_0" onclick="userClick(this);">&nbsp;</td>
+            <td id="0_1" onclick="userClick(this);">&nbsp;</td>
+            <td id="0_2" onclick="userClick(this);">&nbsp;</td>
+            
+                     
+        </tr>
+		<tr>
+			<td id="1_0" onclick="userClick(this);">&nbsp;</td>
+            <td id="1_1" onclick="userClick(this);">&nbsp;</td>
+            <td id="1_2" onclick="userClick(this);">&nbsp;</td>
+		</tr>
+		<tr>
+			<td id="2_0" onclick="userClick(this);">&nbsp;</td>
+            <td id="2_1" onclick="userClick(this);">&nbsp;</td>
+            <td id="2_2" onclick="userClick(this);">&nbsp;</td>   
+		</tr>
+		
+        </tbody>
+    </table>
+
+
+</div>
+<div>
+
+<p><textarea name="scriptText" id="scriptText" style="margin: 0px; width: 409px; height: 444px;">
+//Вставлять веса сюда
+</textarea></p>
+<span><input name="goButton" id="startButton" type="button" value="Запомнить" onclick="createBrain();"/></span><span><input name="goButton" id="startButton" type="button" value="Restart" onclick="restart();"/></span>
+</div>
+</body>
+
+
+</html>

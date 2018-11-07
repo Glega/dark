@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Игровая комната ID/${RoomID}</title>
+    <script type="text/javascript" src="/game.js"></script>
+
+    <script type="text/javascript" src="/js/engine/boomer.js"></script>
+    <script type="text/javascript" src="/js/engine/loader.js"></script>
+    <script type="text/javascript" src="/js/engine/Bitmap.js"></script>
+    <script type="text/javascript" src="/js/engine/Stage.js"></script>
+    <script type="text/javascript" src="/js/engine/shape.js"></script>
+    <script type="text/javascript" src="/js/engine/sprite.js"></script>
+    <script type="text/javascript" src="/js/gameFrame.js"></script>
+
+
+
+    <script type="text/javascript">
+        var ws;
+        var userId = "${User}";
+        var sid = "${sid}";
+        var roomId = "${RoomID}";
+
+        var logo;
+	    var boomer;
+
+	    function init() {
+            initParams();
+            boomer = new Boomer({width:800, height:600, container:"main-scene"});
+            boomer.setLoadImagesHandler(main);
+            boomer.loadImages(["/img/wall.jpg"]);
+            var server = window.location.href.substr(7, document.location.href.length).split("/")[0];
+
+            ws = new WebSocket("ws://" + server + "/api");
+
+            ws.onopen = function (event) {console.log("connection open"); joinRoom();}
+            ws.onmessage = onSocketMessageHandler;
+            ws.onclose = function (event) {console.log("Connection closed!");}
+        }
+
+        function throwZariks(){
+         var obj = {method:"throwZarik", roomId: roomId};
+         sendMessage(obj);
+        }
+
+        function startGame(){
+            var obj = {method:"startGame", roomId: roomId};
+            sendMessage(obj);
+        }
+
+    </script>
+
+</head>
+<body onload="init();">
+<h1>Добро пожавловать в игру! ${User}</h1>
+
+<div id="joinFrame">
+<span>Подключаемся...</span>
+    <input type="button" name="throw" value="Сесть за стол" onclick="joinRoom();"/>
+</div>
+<p></p>
+<div id="main-scene">
+
+
+</div>
+
+<div id="joinGameButton" style="display:none">
+    <input type="button" name="throw" value="Сесть за стол" onclick="joinGame();"/>
+
+</div>
+
+<div id="adminPanel" style="display:none">
+    Admin panel
+    <input type="button" name="throw" value="Начать игру" onclick="startGame();"/>
+</div>
+
+<div id="main" style="display:none">
+    <input type="button" name="throw" value="Бросить зарики" onclick="throwZarik();"/>
+    <input type="button" name="throw" value="Конец хода" onclick="endTurn();"/>
+    <div>
+
+        Текущий игрок:<span id="currentPlayer"></span><p></p>
+        Зарик:<span id="cscore"></span><p></p>
+        Раунд№:<span id="round"></span>
+
+    </div>
+</div>
+
+<table>
+    <tbody>
+    <tr>
+        <td width="730">
+            <div>
+                <textarea id="messages" rows="10" cols="100" readonly="readonly" style="resize:none"></textarea>
+                <input name="usermsg" type="text" id="message" size="90" onkeypress="chatMsgKeyHandler(event)"/>
+                <input type="button" name="submitmsg" value="Send..." onclick="sendChatMessage();"/>
+            </div>
+
+        </td>
+        <td>
+            <textarea style="padding-top: 20px" id="users" rows="10" cols="20" readonly="readonly" style="resize:none"></textarea>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+</body>
+</html>

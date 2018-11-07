@@ -1,0 +1,214 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Jopa</title> 
+	
+	<script type="text/javascript" src="js/boomer.js"></script>
+	<script type="text/javascript" src="js/loader.js"></script>
+	<script type="text/javascript" src="js/Bitmap.js"></script>
+	<script type="text/javascript" src="js/Stage.js"></script>
+	<script type="text/javascript" src="js/shape.js"></script>
+	<script type="text/javascript" src="js/sprite.js"></script>
+	
+</head>
+
+
+<body>
+<table>
+<tr><td>sdfsdf</td><td>
+<div id="main_screen">
+
+</div>
+</td></tr>
+</table>
+
+
+<script>
+	
+	var logo;
+	
+	var boomer = new Boomer();
+	boomer.setLoadImagesHandler(main);
+	boomer.loadImages(["cavcaz_bg.png", "fox.png", "bear.png", "logo.png", "red.png", "space3.png", "coin.png", "inv_button.png", "exit_button.png"]);
+	
+	function bind(func, context) {
+		return function() { // (*)
+			return func.apply(context, arguments);
+		};
+	}
+	
+	var requestAnimFrame = (function(){
+    return window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function(callback){
+            window.setTimeout(callback, 1000 / 60);
+        };
+	})();
+	
+	
+	
+	//main();
+	
+	function main(){	
+		
+		var bg = boomer.add.image("cavcaz_bg.png");
+		bg.width = 800;
+		bg.height = 600;
+		bg.addEventListener("mousedown", function(e){
+			console.log("it is BG!!!");
+		});
+		for(var c = 0; c < 100; c++){
+			addCoin();
+		}
+		/*
+		logo = new SimpleShape();
+		logo.init("coin.png", 420, 120);
+		
+
+		var red = new SimpleShape();
+		red.init("red.png", 100, 100);
+		
+		var logo1 = new SimpleShape();
+		logo1.init("logo.png", 412, 100);
+		*/
+		update();
+		
+	}
+	
+	function addCoin(){
+		var id = "fox.png";
+		var yF = 1;
+		var wF = 250;
+		
+		
+		if(Math.random() < 0.5) id = "bear.png";
+		
+		if(id == "fox.png") {yF = 1; wF = 150;}
+	
+		var coin = boomer.add.sprite(id);
+		
+		var weight = Math.random() * 50;
+		
+		coin.width = 142 + weight;
+		coin.height = 100 + weight;
+		coin.init({
+			width: 242,
+			height: wF,
+			x:0,
+			y:yF,
+			pause: false
+		});
+		
+		coin.addEventListener("mousemove", function(e){
+			
+		});
+		
+		coin.addEventListener("mousedown", function(e){
+			e.target.remove();
+			addCoin();
+		});
+		
+		coin.addEventListener("update", function(e){
+			e.target.x -= Math.random() * 5;
+			if(e.target.x < -100) e.target.remove();
+		});
+		
+		coin.addEventListener("remove", function(e){
+			//console.log("Remove " + e);
+			delete(coin);
+			addCoin();
+		});
+		
+		coin.x = Math.random() * 650 + 350;	
+		coin.y = Math.random() * 500 + 200;
+	}
+	
+	function update(){
+		//logo.x += 1;
+		boomer.update();		
+		requestAnimFrame(update);	
+	}
+	
+	function SimpleShape(){
+		this.x = 0;
+		this.y = 0;
+		
+		this.dx = 0;
+		this.dy = 0;
+		this.width = 0;
+		this.height = 0;
+		
+		this.lastX = 0;
+		this.lastY = 0;
+		
+		this.drag = false;
+		this.shape = null;
+		
+		this.removeFromStage = function(){
+			this.shape.remove();
+		}
+		
+		this.init = function(imageID, width, height){
+			var shape = boomer.add.image(imageID);
+			shape.width = width;
+			shape.height = height;
+			this.width = width;
+			this.height = height;
+			this.shape = shape;
+			var inst = this;
+			
+			shape.addEventListener("mousedown", function(e){
+				inst.lastX = e.target.x;
+				inst.lastY = e.target.y;
+				
+				e.target.width += 20;
+				e.target.height += 20;
+				e.target.x -= 10;
+				e.target.y -= 10;
+				inst.x = e.target.x;
+				inst.y = e.target.y;
+				
+				inst.dx = inst.x - e.mouseX;
+				inst.dy = inst.y - e.mouseY;
+				inst.drag = true;				
+				
+			});
+			
+			shape.addEventListener("mouseup", function(e){
+				inst.drag = false;	
+				e.target.width = inst.width;
+				e.target.height = inst.height;
+				
+				e.target.x = inst.lastX;
+				e.target.y = inst.lastY;
+				inst.x = e.target.x;
+				inst.y = e.target.y;
+				
+			});
+			
+			shape.addEventListener("mousemove", function(e){
+				
+				if(!inst.drag) return;
+				e.target.x = e.mouseX + inst.dx;
+				e.target.y = e.mouseY + inst.dy;
+				inst.x =e.target.x;
+				inst.y =e.target.y;
+				inst.lastX = e.target.x + 10;
+				inst.lastY = e.target.y + 10;				
+			});
+		}
+	
+	}
+	
+	
+</script>
+
+
+</body>
+
+
+</html>

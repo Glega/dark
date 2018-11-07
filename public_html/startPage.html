@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Камень, ножницы и два ствола</title>
+    <script type="text/javascript" src="main.js"></script>
+    <script src="https://vk.com/js/api/openapi.js?151" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var ws;
+        var user = "${User}";
+        var sid = "${sid}";
+        var userId = "${UserID}";
+        var roomId = "${roomId}";
+    </script>
+
+    <style>
+    .MyScroll {
+        height: 400px; /* высота нашего блока */
+        width: 400px; /* ширина нашего блока */
+        background: #fff; /* цвет фона, белый */
+
+        overflow-x: none; /* прокрутка по горизонтали */
+        overflow-y: scroll; /* прокрутка по вертикали */
+    }
+    </style>
+
+</head>
+<body onload="init(getRooms);">
+
+<h1>Стартовая страница</h1>
+
+Вы вошли как <a href="/user/id${UserID}">${User}</a> <a href="javascript:exit()"> | Выйти наружу!</a>
+<p></p>
+
+<div id="showRoomOptions" style="display:none">
+    <p>Вы еще не закончили играть в той хате! Можно вернуться, или покинуть игру. Внимание, если вы покинете игру, вам присвоится звание кидалово!</p>
+
+    <a href="/room/${roomId}">Вернуться</a>
+
+    <p><input type="button" value="Покинуть игру" onclick="exitRoom()"/></p>
+
+
+</div>
+
+<div id="startOptions">
+
+    <input type="button" value="Создать стол" onclick="createRoom()"/>
+
+
+    <div>Список столов</div>
+    <table><tbody><tr>
+            <td style="width:100px">№ Комнаты</td>
+            <td style="width:150px">Макс. кол-во игроков</td>
+            <td style="width:50px">Статус</td>
+    </tr></tbody></table>
+
+    <div id="tableList" class="MyScroll">
+
+    </div>
+    <input type="button" value="Обновить" onclick="getRooms()"/>
+</div>
+
+</body>
+</html>

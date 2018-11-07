@@ -185,6 +185,7 @@ public class MessageService {
         Room room = roomService.getRoom(roomId);
         if(room == null) return;
         room.sendMessage(data);
+
     }
 
     public void add(GameSocket webSocket, String uid) {

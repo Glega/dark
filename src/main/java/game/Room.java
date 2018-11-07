@@ -56,7 +56,6 @@ public class Room {
             Packet<String, String> p = new Packet<>(createPacket("onGameStartHandler", userProfile.getLogin(), new String[]{"k", "kl"}));
             sendMessage(p.toJSON());
         }
-
     }
 
     public void removeUser(String login){
@@ -66,7 +65,6 @@ public class Room {
         p.put("user", login);
         Packet packet = new Packet(p);
         sendMessage(packet.toJSON());
-
     }
 
 

@@ -23,7 +23,6 @@ public class GameLogic {
     private final Random random;
 
     public GameLogic(Room room){
-
         this.room = room;
         this.random = new Random();
     }

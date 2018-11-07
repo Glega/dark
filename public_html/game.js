@@ -36,9 +36,6 @@ function chatMsgKeyHandler(e){
     }
 }
 
-
-
-
 function joinRoom(){
     obj = {};
     obj.roomId = roomId;

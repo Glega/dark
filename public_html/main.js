@@ -19,16 +19,6 @@ function showRoomList(event){
     var headRow = document.createElement("tr");
     table.appendChild(headRow);
 
-    /*
-    var headers = ["№ Комнаты", "Игроки", "Статус"]
-
-    for(var i = 0; i < headers.length; i++){
-        var headCol = document.createElement("td");
-        headCol.innerHTML = headers[i];
-        headRow.appendChild(headCol);
-    }
-    */
-
     var s = 0;
     for(var key in rsp){
             if(rsp.hasOwnProperty(key)){
@@ -53,14 +43,6 @@ function showRoomList(event){
               col.style.width = "50px";
               row.appendChild(col);
 
-              /*
-              for(var i in data){
-                var col = document.createElement("td");
-                console.log("FUUUU" + i);
-                col.innerHTML = data[i];
-                row.appendChild(col);
-              }
-              */
               if(s == 1){ row.style.backgroundColor = "#F5F5F5";s = 0}else{s++;}
 
               var link = document.createElement("a");
@@ -77,30 +59,25 @@ function showRoomList(event){
 }
 
 function connectRoom(roomID){
-
-console.log("Try to connect " + roomID);
-ws.onclose = function(e){
-    document.location.href = "./room/" + roomID;
-    //console.log("Disconect!" + roomID);
-}
-ws.close();
+    console.log("Try to connect " + roomID);
+    ws.onclose = function(e){
+         document.location.href = "./room/" + roomID;
+    }
+    ws.close();
 }
 
 
 
 function createRoom(){
-var rName = document.getElementById("roomName");
-var data = {method:"createRoom", user: userId, roomName: "fff"};
-sendMessage(data, onRoomCreateHandler);
-getRooms();
+    var rName = document.getElementById("roomName");
+    var data = {method:"createRoom", user: userId, roomName: "fff"};
+    sendMessage(data, onSocketMessageHandler);
+    console.log("Fuck");
+    // getRooms();
 }
 
 function onRoomCreateHandler(event){
- console.log(event.data);
- var roomDiv = document.getElementById("room");
- roomDiv.style.display = "block";
- var data = JSON.parse(event.data);
- connectRoom(data.id);
+  connectRoom(event.roomId);
 }
 
 function exitRoom(){
@@ -118,6 +95,7 @@ function exitRoomHandler(event){
 function init(obj) {
 
     params.showNewFunction = showNewFunction;
+    params.onRoomCreateHandler = onRoomCreateHandler;
     console.log("Room id = " + roomId);
     roomFrame = document.getElementById("showRoomOptions");
     startFrame = document.getElementById("startOptions");
@@ -135,9 +113,8 @@ function init(obj) {
     ws.onopen = function (event) {
      if(obj != null) obj.call(this);
     }
-    ws.onmessage = function (event) {
+    ws.onmessage = onSocketMessageHandler;
 
-    }
     ws.onclose = function (event) {
     }
 
@@ -159,6 +136,14 @@ function sendMessage(obj, callBack) {
     obj.sid = sid;
     ws.send(JSON.stringify(obj));
     ws.onmessage = callBack;
+}
+
+function onSocketMessageHandler(event){
+    var data = JSON.parse(event.data);
+    console.log(data);
+    console.log("Use method: " + data.method);
+    if(params[data.method]){params[data.method].call(this, data);}
+    else{console.log("Bad command");}
 }
 
 function showNewFunction(data){

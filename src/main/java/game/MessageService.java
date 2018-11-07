@@ -83,6 +83,13 @@ public class MessageService {
             case "createRoom":
                 room = roomService.createRoom(login);
                 room.setGameMessagePackets(messageSender);
+
+                responseJSON.put("method", "onRoomCreateHandler");
+                responseJSON.put("status", "done");
+                responseJSON.put("roomId", room.getRoomId());
+
+                socket.sendString(responseJSON.toJSONString());
+
                 break;
 
             case "chatMessage":
@@ -94,7 +101,6 @@ public class MessageService {
 
             case "joinRoom":        //register user and socket in game
                 if(room == null) return;
-
                 room.addUser(profile);
                 registerSocket(profile, socket);
                 profile.setInGameStatus(UserProfile.PLAYER_READY);
@@ -149,12 +155,10 @@ public class MessageService {
         profile.setSocket(socket);
         disconnectPacket = (GameSocket gameSocket)->{
             profile.setSocket(null);
-
             JSONObject responseJSON = new JSONObject();
             responseJSON.put("user", profile.getLogin());
             responseJSON.put("method", "onUserChangeState");
             responseJSON.put("reason", "disconnect");
-
             sendMessageTo(profile.getRoom().getRoomId(), responseJSON.toJSONString());
             Debugger.debug("User " + profile.getLogin() + " disconnected!");
         };

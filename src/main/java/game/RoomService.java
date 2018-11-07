@@ -30,7 +30,6 @@ public class RoomService {
         Room room = new Room();
         String roomId = MD5Util.MD5Hash(roomName + "Fuck you");
         room.setRoomId(roomId);
-
         rooms.put(roomId, room);
         return room;
     }

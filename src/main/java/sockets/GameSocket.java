@@ -33,9 +33,7 @@ public class GameSocket {
     @OnWebSocketConnect
     public void onOpen(Session session) {
         this.session = session;
-
         //Debugger.debug(this + " connected...");
-
     }
 
     @OnWebSocketMessage

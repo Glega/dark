@@ -75,6 +75,11 @@ public class Room {
         usersCount--;
     }
 
+    public void onDisconectUser(UserProfile userProfile){
+        //TODO: Remove user from room or make decision in gamelogic
+
+    }
+
 
     public HashMap<String, UserProfile> getUsers(){
         return users;

@@ -159,7 +159,8 @@ public class MessageService {
             responseJSON.put("user", profile.getLogin());
             responseJSON.put("method", "onUserChangeState");
             responseJSON.put("reason", "disconnect");
-            sendMessageTo(profile.getRoom().getRoomId(), responseJSON.toJSONString());
+            //sendMessageTo(profile.getRoom().getRoomId(), responseJSON.toJSONString());
+            profile.getRoom().onDisconectUser(profile);
             Debugger.debug("User " + profile.getLogin() + " disconnected!");
         };
         socket.setDisconnectHandler(disconnectPacket);

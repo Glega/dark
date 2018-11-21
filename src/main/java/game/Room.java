@@ -22,13 +22,13 @@ public class Room {
     private String roomStatus = "NOT_GAME";
 
     private transient HashMap<String, UserProfile> users;
-    private transient List<UserProfile> players;
+    private transient HashMap<String, UserProfile> players;
     private transient GameLogic gameLogic;
 
     private int usersCount = 0;
     private int playersCount = 0;
 
-    private int maxPlayers = 3;
+    private int maxPlayers = 2;
 
     private transient RemoveUserHandler removeUserHandler;
     private transient GameMessagePackets gameMessagePackets;
@@ -39,7 +39,7 @@ public class Room {
     public Room(){
         users = new HashMap<>();
         this.gameLogic = new GameLogic(this);
-        players = new ArrayList<>();
+        players = new HashMap<>();
         roomCounter = ROOMS;
         ROOMS++;
     }
@@ -52,32 +52,73 @@ public class Room {
     }
 
     public void addPlayer(UserProfile userProfile){
-        if(roomStatus == "GAME") return;
-        players.add(userProfile);
-        userProfile.setInGameStatus(UserProfile.IN_GAME);
+        if(roomStatus == "GAME"){
+            onJoinGameHandler(userProfile, "false");
+            return;
+        }
+
+        if(userProfile.getInGameStatus() == UserProfile.PLAYER_READY || userProfile.getInGameStatus() == UserProfile.IN_GAME){
+            onJoinGameHandler(userProfile, "false");
+            return;
+        }
+
+        players.put(userProfile.getLogin(), userProfile);
+        userProfile.setInGameStatus(UserProfile.PLAYER_READY);
+
+        Debugger.debug(userProfile.getInGameStatus());
+
         if(players.size() == maxPlayers) {
+            Debugger.debug("Game start in room#" + roomId);
             roomStatus = "GAME";
+            //userProfile.setInGameStatus(UserProfile.IN_GAME);
             gameLogic.startGame(players);
             Packet<String, String> p = new Packet<>(createPacket("onGameStartHandler", userProfile.getLogin(), new String[]{"k", "kl"}));
             sendMessage(p.toJSON());
         }
         playersCount++;
+        userProfile.setRoomPosition(playersCount);
+        onJoinGameHandler(userProfile, "true");
     }
 
-    public void removeUser(String login){
+    private void onJoinGameHandler(UserProfile userProfile, String status){
+        HashMap<String, String> p = new HashMap<>();
+        p.put("method", "onUserJoinGame");
+        p.put("user", userProfile.getLogin());
+        p.put("status", status);
+        Packet packet = new Packet(p);
+        sendMessage(packet.toJSON());
+    }
+
+    public void removeUser(UserProfile userProfile){
+        String login = userProfile.getLogin();
+        int roomPosition = userProfile.getRoomPosition();
         users.remove(login);
         HashMap<String, String> p = new HashMap<>();
         p.put("method", "userExitRoom");
         p.put("user", login);
         Packet packet = new Packet(p);
         sendMessage(packet.toJSON());
-        if(users.size() == 0) RoomService.getRoomService().removeRoom(this);
         usersCount--;
+        if(users.size() == 0) RoomService.getRoomService().removeRoom(this);
+        Debugger.debug("user " + login + " left room" + "; usersCount = " + String.valueOf(users.size()));
+
+        if(players.get(login) != null){
+            players.remove(login);
+            playersCount--;
+        }
+
     }
 
     public void onDisconectUser(UserProfile userProfile){
         //TODO: Remove user from room or make decision in gamelogic
 
+        if(userProfile.getInGameStatus() == UserProfile.IN_GAME || userProfile.getInGameStatus() == UserProfile.PLAYER_READY){
+            //gameLogic.turn();
+            //do something for user
+            return;
+        }
+        //or remove user from room and set status not ready
+        userProfile.exitRoom();
     }
 
 
@@ -142,5 +183,7 @@ public class Room {
     public String getRoomId(){return this.roomId;}
 
     public GameLogic getGameLogic(){return this.gameLogic;}
+
+    public String getRoomStatus(){return this.roomStatus;}
 
 }

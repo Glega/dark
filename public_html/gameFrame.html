@@ -21,9 +21,16 @@
         var userId = "${User}";
         var sid = "${sid}";
         var roomId = "${RoomID}";
+        var userStatus = "${UserStatus}";
+        var roomStatus = "${RoomStatus}";
 
         var logo;
 	    var boomer;
+
+	    var connectButton;
+	    var exitRoomButton;
+	    var mainFrame;
+
 
 	    function init() {
             initParams();
@@ -34,24 +41,30 @@
 
             ws = new WebSocket("ws://" + server + "/api");
 
-            ws.onopen = function (event) {console.log("connection open"); joinRoom();}
+            ws.onopen = function (event) {
+                console.log("connection open"); joinRoom();
+                showFrame(userStatus);
+            }
             ws.onmessage = onSocketMessageHandler;
             ws.onclose = function (event) {console.log("Connection closed!");}
-        }
 
-        function throwZariks(){
-         var obj = {method:"throwZarik", roomId: roomId};
-         sendMessage(obj);
-        }
+            connectButton = document.getElementById("joinGame");
+            exitRoomButton = document.getElementById("exitRoom");
+            mainFrame = document.getElementById("main");
 
-        function startGame(){
-            var obj = {method:"startGame", roomId: roomId};
-            sendMessage(obj);
+            if(userStatus == "ready") console.log("fuck");
+
         }
 
         function exitRoom(){
             var data = {method:"exitRoom", user: userId};
             sendMessage(data, exitRoomHandler);
+        }
+
+        function exitRoomHandler(event){
+            console.log(event);
+            if(event.status == "done") document.location.href = "./game";
+
         }
 
     </script>
@@ -62,7 +75,7 @@
 
 <div id="joinFrame">
 <span>Подключаемся...</span>
-    <input type="button" name="throw" value="Сесть за стол" onclick="joinRoom();"/>
+
 </div>
 <p></p>
 <div id="main-scene">
@@ -71,24 +84,22 @@
 </div>
 
 <div id="joinGameButton" style="display:none">
-    <input type="button" name="throw" value="Присоединиться к игре" onclick="joinGame();"/>
-    <input type="button" name="throw" value="Покинуть комнату" onclick="exitRoom();"/>
+    <input type="button" name="joinGame" id="joinGame" value="Присоединиться к игре" onclick="joinGame();"/>
+    <input type="button" name="exitRoom" id="exitRoom" value="Покинуть комнату" onclick="exitRoom();"/>
 </div>
 
 <div id="adminPanel" style="display:none">
     Admin panel
-    <input type="button" name="throw" value="Начать игру" onclick="startGame();"/>
+
 </div>
 
 <div id="main" style="display:none">
-    <input type="button" name="throw" value="Бросить зарики" onclick="throwZarik();"/>
-    <input type="button" name="throw" value="Конец хода" onclick="endTurn();"/>
+    <input type="button" name="throw" value="Камень" onclick="sendPick('Stone');"/>
+    <input type="button" name="throw" value="Ножницы" onclick="sendPick('Scissors');"/>
+    <input type="button" name="throw" value="Бумага" onclick="sendPick('Paper');"/>
     <div>
-
-        Текущий игрок:<span id="currentPlayer"></span><p></p>
-        Зарик:<span id="cscore"></span><p></p>
         Раунд№:<span id="round"></span>
-
+        <span id="winner"></span>
     </div>
 </div>
 

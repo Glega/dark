@@ -100,10 +100,15 @@ public class MessageService {
                 break;
 
             case "joinRoom":        //register user and socket in game
-                if(room == null) return;
+                if(room == null) {
+                    responseJSON.put("method", "onJoinRoomHandler");
+                    responseJSON.put("status", "error");
+                    socket.sendString(responseJSON.toJSONString());
+                    return;
+                }
                 room.addUser(profile);
                 registerSocket(profile, socket);
-                profile.setInGameStatus(UserProfile.PLAYER_READY);
+                //profile.setInGameStatus(UserProfile.PLAYER_READY);
                 responseJSON.put("method", "onJoinRoomHandler");
                 responseJSON.put("spectators", room.getUsersToString());
                 sendMessageTo(roomId, responseJSON.toJSONString());
@@ -130,7 +135,7 @@ public class MessageService {
                 //sendMessageTo(roomId, responseJSON.toJSONString());
                 break;
             case "gameEvent":
-                Debugger.debug("Room = " + room + " MessageService:line 131");
+                //Debugger.debug("Room = " + room + " MessageService:line 131");
                 parseRoomMessage(room, obj);
                 break;
         }
@@ -162,6 +167,7 @@ public class MessageService {
             //sendMessageTo(profile.getRoom().getRoomId(), responseJSON.toJSONString());
             profile.getRoom().onDisconectUser(profile);
             Debugger.debug("User " + profile.getLogin() + " disconnected!");
+            Debugger.debug(profile.getInGameStatus());
         };
         socket.setDisconnectHandler(disconnectPacket);
     }

@@ -6,6 +6,7 @@ import freemarker.template.TemplateException;
 import game.Room;
 import game.RoomService;
 import templater.PageGenerator;
+import util.Debugger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -49,12 +50,22 @@ public class GameFrameServlet extends HttpServlet{
 
         Room room = roomService.getRoom(request.getPathInfo().substring(1));
 
+        if(room == null){
+            response.sendRedirect(response.encodeRedirectURL("/game"));
+            Debugger.debug("Room null!");
+            return;
+        }
+
+        Debugger.debug("Room not null!");
+
         if (profile == null) {
             response.sendRedirect(response.encodeRedirectURL("/"));
             return;
         } else {
             pageVariables.put("RoomID", request.getPathInfo().substring(1));
             pageVariables.put("User", profile.getLogin());
+            pageVariables.put("UserStatus", profile.getInGameStatus());
+            pageVariables.put("RoomStatus", room.getRoomStatus());
             pageVariables.put("sid", sid);
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_OK);

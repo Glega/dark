@@ -19,6 +19,7 @@ public class UserProfile {
     private final int userId;
 
     private Room room;
+    private int roomPosition;//Позиция в массиве игроков комнаты, чтобы его потом удалить из списка игроков
     private String inGameStatus;
 
 
@@ -30,6 +31,7 @@ public class UserProfile {
         this.defeats = 0;
         this.userId = IDS;
         this.inGameStatus = NOT_READY;
+        this.roomPosition = 0;
         IDS++;
     }
 
@@ -58,22 +60,25 @@ public class UserProfile {
 
     public Room getRoom(){return this.room;}
 
+    public void setRoomPosition(int roomPosition){this.roomPosition = roomPosition;}
+
+    public int getRoomPosition(){return this.roomPosition;}
+
     public void setInGameStatus(String inGameStatus){this.inGameStatus = inGameStatus;}
 
     public String getInGameStatus(){return this.inGameStatus;}
 
     public void exitRoom(){
         if(room != null){
-            room.removeUser(this.login);
+            room.removeUser(this);
         }
         room = null;
+        setInGameStatus(UserProfile.NOT_READY);
     }
 
     public void joinGame(){
-
         if(room == null || inGameStatus == IN_GAME) return;
         room.addPlayer(this);
-
     }
 
     static public int IDS = 0;

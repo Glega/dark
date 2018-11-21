@@ -11,9 +11,11 @@ function initParams(){
 
     params.onGameStartHandler = onGameStartHandler;
     params.updateGameInfoHandler = updateGameInfoHandler;
+    params.exitRoomHandler = exitRoomHandler;
+    params.userExitRoom = userExitRoom;
+    params.onUserJoinGame = onUserJoinGame;
+    params.onGameEventHandler = onGameEventHandler;
 }
-
-
 
 function onSocketMessageHandler(event){
 var data = JSON.parse(event.data);
@@ -45,6 +47,10 @@ function joinRoom(){
 }
 
 function onJoinRoomHandler(data){
+  if(data.status == "error"){
+        document.location.href = "./game";
+  }
+
   var target = document.getElementById("joinFrame");
   target.style.display = "none";
 
@@ -67,25 +73,29 @@ function joinGame(){
     sendMessage(obj);
 }
 
+function onUserJoinGame(data){
+    if(data.user == userId){
+        console.log("Fuck");
+        connectButton.style.display = "none";
+    }
+     var messageField = document.getElementById("messages");
+     messageField.value += "System: " + data.user + " присоединился к игре." + '\n';
+}
+
 function changeGameStatusHandler(data){
   console.log(data.status);
-  if(data.status == "ready") onGameStartHandler({});
+  //if(data.status == "ready") onGameStartHandler({});
 }
 
 function onGameStartHandler(data){
-var divJoinGameButton = document.getElementById("joinGameButton");
-divJoinGameButton.style.display = "none";
-
-var gameFrame = document.getElementById("main");
-gameFrame.style.display = "block";
-
-console.log("Game started2 ");
-
+    var divJoinGameButton = document.getElementById("joinGameButton");
+    divJoinGameButton.style.display = "none";
+    var gameFrame = document.getElementById("main");
+    gameFrame.style.display = "block";
+    console.log("Game started2 ");
 }
 
 function updateGameInfoHandler(data){
-  //var message = data.currentPlayer + ": бросил зарики";
-
   var roundField = document.getElementById("round");
   roundField.innerHTML = data.round;
 
@@ -95,9 +105,6 @@ function updateGameInfoHandler(data){
   var cscore = document.getElementById("cscore");
   cscore.innerHTML = data.cscore;
 
-  //var messageField = document.getElementById("messages");
- // messageField.value += message + '\n';
- //console.log("Game updated@!");
 }
 
 function endTurn(){
@@ -114,7 +121,6 @@ function throwZarik(){
     obj.method = "gameEvent";
     obj.event = "throwZarik";
     sendMessage(obj);
-
 }
 
 function sendChatMessage(){
@@ -137,13 +143,18 @@ function onUserChangeState(data){
     if(data.reason == "connect") users[data.user] = data.user;
     if(data.reason == "disconnect"){
       var messageField = document.getElementById("messages");
-      messageField.value += data.user + " съебался из комнаты." + '\n';
+      messageField.value += "System: " + data.user + " съебался из комнаты." + '\n';
       delete users[data.user];
     }
     showRoomUsers();
 }
 
-
+function userExitRoom(data){
+      var messageField = document.getElementById("messages");
+      messageField.value += "System: " + data.user + " съебался из комнаты." + '\n';
+      delete users[data.user];
+      showRoomUsers();
+}
 
 function showRoomUsers(){
  var userField = document.getElementById("users");
@@ -155,3 +166,50 @@ function showRoomUsers(){
 }
 
 
+/*
+Game function
+*/
+
+function showFrame(frame){
+
+    if(frame == "ready"){
+        connectButton.style.display = "none";
+    }
+
+    if(frame == "inGame" || roomStatus == "GAME"){
+        connectButton.style.display = "none";
+        mainFrame.style.display = "block";
+        obj = {};
+        obj.roomId = roomId;
+        obj.method = "gameEvent";
+        obj.event = "getGameInfo";
+        sendMessage(obj);
+    }
+
+
+}
+
+function onGameEventHandler(data){
+    console.log(data);
+    if(data.event == "endTurn"){
+          var messageField = document.getElementById("messages");
+          messageField.value += "System: " + data.firstPlayer + " выбрал " + data.firstPick + ";" + '\n';
+          messageField.value += "System: " + data.secPlayer + " выбрал " + data.secPick + '\n';
+          messageField.value += "System: победил - " + data.winner + '\n';
+    }
+
+    if(data.playerTurn != undefined){
+           var messageField = document.getElementById("messages");
+           messageField.value += "System: " + data.playerTurn + " сделал выбор!" + '\n';
+
+    }
+}
+
+function sendPick(pick){
+    obj = {};
+    obj.roomId = roomId;
+    obj.method = "gameEvent";
+    obj.event = "pick";
+    obj.pick = pick;
+    sendMessage(obj);
+}

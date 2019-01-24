@@ -22,6 +22,7 @@ public class Main {
 
         AccountServise accountServise = new AccountServise();
         accountServise.addUser(new UserProfile("admin", "admin"));
+        accountServise.addUser(new UserProfile("Fly", "12345"));
 
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);

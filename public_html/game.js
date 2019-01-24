@@ -191,11 +191,31 @@ function showFrame(frame){
 
 function onGameEventHandler(data){
     console.log(data);
+    var messageField = document.getElementById("messages");
     if(data.event == "endTurn"){
-          var messageField = document.getElementById("messages");
+
           messageField.value += "System: " + data.firstPlayer + " выбрал " + data.firstPick + ";" + '\n';
           messageField.value += "System: " + data.secPlayer + " выбрал " + data.secPick + '\n';
           messageField.value += "System: победил - " + data.winner + '\n';
+          messageField.value += "System: А стреляет - " + data.loser + '\n';
+
+
+    }
+
+    if(data.loser == userId){
+        fireButton.style.display = "block";
+        mainFrame.style.display = "none";
+    }
+
+    if(data.event == "fire" && data.status.toString() == "true"){
+         messageField.value += "System: " + data.user + "застрелился насмерть!" + '\n';
+         messageField.value += "System: " + " Конец игры!" + '\n';
+    }
+
+    if(data.event == "fire" && data.status.toString() == "false"){
+         fireButton.style.display = "none";
+         mainFrame.style.display = "block";
+         messageField.value += "System: " + data.user + " повезло!"  + '\n';
     }
 
     if(data.playerTurn != undefined){
@@ -211,5 +231,13 @@ function sendPick(pick){
     obj.method = "gameEvent";
     obj.event = "pick";
     obj.pick = pick;
+    sendMessage(obj);
+}
+
+function fire(){
+    obj = {};
+    obj.roomId = roomId;
+    obj.method = "gameEvent";
+    obj.event = "fire";
     sendMessage(obj);
 }

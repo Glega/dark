@@ -51,6 +51,7 @@
             connectButton = document.getElementById("joinGame");
             exitRoomButton = document.getElementById("exitRoom");
             mainFrame = document.getElementById("main");
+            fireButton = document.getElementById("fire");
 
             if(userStatus == "ready") console.log("fuck");
 
@@ -101,6 +102,10 @@
         Раунд№:<span id="round"></span>
         <span id="winner"></span>
     </div>
+</div>
+
+<div id="fire" style="display:none">
+    <input type="button" name="fire" value="Пальнуть на удачу" onclick="fire();"/>
 </div>
 
 <table>

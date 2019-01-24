@@ -72,8 +72,10 @@ public class Room {
             roomStatus = "GAME";
             //userProfile.setInGameStatus(UserProfile.IN_GAME);
             gameLogic.startGame(players);
-            Packet<String, String> p = new Packet<>(createPacket("onGameStartHandler", userProfile.getLogin(), new String[]{"k", "kl"}));
-            sendMessage(p.toJSON());
+            JSONObject response = new JSONObject();
+            response.put("gameStart", "gameStart");
+            //Packet<String, String> p = new Packet<>(createPacket("onGameStartHandler", userProfile.getLogin(), new String[]{"k", "kl"}));
+            sendMessage(createJSONPacket("onGameStartHandler", userProfile.getLogin(), response.toJSONString()));
         }
         playersCount++;
         userProfile.setRoomPosition(playersCount);
@@ -142,6 +144,14 @@ public class Room {
             obj.put(params, params);
         }
         return obj;
+    }
+
+    public String createJSONPacket(String method, String login, String data){
+        JSONObject response = new JSONObject();
+        response.put("method", method);
+        response.put("login", login);
+        response.put("data", data);
+        return response.toJSONString();
     }
 
     public void sendMessage(String JSONMsg){

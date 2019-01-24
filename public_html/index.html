@@ -23,7 +23,12 @@
 
         console.log(rsp.response);
 
-		if(rsp.response != "error") document.location.href = "./game";
+		if(rsp.response != "error"){            //if user and password correct
+		    document.location.href = "./game";  //surf to game
+
+		}else{                                  //Fuck! This error!
+		    confirm("Ошибка овторизации!!!");
+		}
 	}
 	xhr.send(body);
 }
@@ -79,7 +84,7 @@ background-position:-150px 0px;
 
 <body class = "fon_scroll">
 
-	<div><h1>Камень ножницы и два ствола</h1></div>
+	<div><h1 style="color:yellow">Камень ножницы и два ствола</h1></div>
 
     <form id="login">
 

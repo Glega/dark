@@ -18,6 +18,7 @@ public class GameLogic {
     private final Random random;
     private String frame;
 
+
     private int round;
 
     public GameLogic(Room room){
@@ -37,7 +38,6 @@ public class GameLogic {
 
     public void restart(){
         this.playersPick = new HashMap<>();
-        round = 1;
         this.frame = START;
         room.sendMessage(gameInfoToJson());
     }
@@ -77,7 +77,7 @@ public class GameLogic {
             case "endTurn":
                 //turn();
                 break;
-            case "pick":
+            case "pick": //Юзер сделал свой выбор
                 Debugger.debug(user + ": pick " + (String)object.get("pick"));
                 String pick = (String)object.get("pick");
                 if(playersPick.get(user) != null) return;
@@ -87,22 +87,22 @@ public class GameLogic {
                 response.put("playerTurn", user);
                 room.sendMessage(response.toJSONString());
 
-                if(playersArray.size() == playersPick.size()){
+                if(playersArray.size() == playersPick.size()){            //Если все сделали выбор, то проверяем кто победил
                     Debugger.debug("End game " + playersPick.values().toArray()[0]);
                     checkGame();
                 }
-
                 break;
-
+            case "fire":
+                checkRullete(user);
+                break;
         }
 
     }
 
     private void checkGame(){
+        if(this.frame.equals(END_GAME)) return;
+
         this.frame = GAME;
-
-
-
         String firstPlayer = (String) playersPick.keySet().toArray()[0];
         String secPlayer = (String) playersPick.keySet().toArray()[1];
 
@@ -121,7 +121,11 @@ public class GameLogic {
 
         if(first.equals(sec)) winner = "draw";
 
-        Debugger.debug("Win " + winner);
+
+        String loser = firstPlayer;
+
+        if(loser.equals(winner)) loser = secPlayer;
+        Debugger.debug("Win " + winner + "; loser = " + loser);
 
         JSONObject response = toJSON();
         response.put("firstPlayer", firstPlayer);
@@ -129,17 +133,52 @@ public class GameLogic {
         response.put("firstPick", first);
         response.put("secPick", sec);
         response.put("winner", winner);
+        response.put("loser", loser);
         response.put("event", "endTurn");
         room.sendMessage(response.toJSONString());
 
-        restart();
+        this.frame = FIRE;
+
+        //checkRullete(loser);
     }
+
+    private void checkRullete(String user){
+        //TODO
+        //Check fire player
+        if(!this.frame.equals(FIRE)) return;
+
+        boolean fire = false;
+
+        int r = random.nextInt(6) + 1;
+
+        if(r > 6 - round) fire = true;
+
+        JSONObject response = toJSON();
+
+        response.put("event", "fire");
+        response.put("user", user);
+        response.put("status", fire);
+        room.sendMessage(response.toJSONString());
+        round++;
+
+        if(fire){
+            this.frame = END_GAME;
+            return;
+        }
+
+        restart();
+
+
+    }
+
 
 
 
     private static String PREPARE = "prepare";
     private static String START = "start";
     private static String GAME = "game";
+    private static String FIRE = "fire";
+    private static String END_GAME = "endGame";
     private static String WAITING = "wait";
     private static String PAPER = "paper";
     private static String SCISSORS = "scissors";

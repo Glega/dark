@@ -11,13 +11,12 @@ body {
 background-color:BlanchedAlmond;
 }
 .fon_scroll {
-margin:0 auto;
-
-background-color:#ffffff;
-background-image:url(../img/underconstruction.jpg);
-background-repeat:no-repeat;
-background-attachment:fixed;
-background-position:-150px 0px;
+	margin:0 auto;
+	background-color:#ffffff;
+	background-image:url(img/underconstruction.jpg);
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-position:-150px 0px;
 }
 </style>
 
@@ -25,7 +24,8 @@ background-position:-150px 0px;
 
 
 <body class="fon_scroll">
-    <h1 align="center" style="color:white">Регистрация игрока</h1>
+<h1 align="center" style="color:white">Регистрация игрока</h1>
+<div>
     <form action="/signUp" method="POST">
         <table border="0">
             <tr><td style="color:white">Логин:</td> <td><input type="text" name="login"/></td></tr>
@@ -38,7 +38,7 @@ background-position:-150px 0px;
 
         <input type="submit" value="Зарегаться">
     </form>
-
+</div>
 <div id="error" style="display:none">
 
 Bad user

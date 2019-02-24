@@ -5,6 +5,7 @@
 
     <title>Камень, ножницы и два ствола</title>
     <script type="text/javascript" src="main.js"></script>
+    <link rel="stylesheet" href="style/button_style.css"/>
 
 
     <script type="text/javascript">
@@ -20,18 +21,34 @@
         height: 400px; /* высота нашего блока */
         width: 400px; /* ширина нашего блока */
         background: #fff; /* цвет фона, белый */
+		background-color: #118EC7;
+		background-image: linear-gradient(180deg, transparent 50%, rgba(255,255,255,.5) 50%);
+		background-size: 50px 50px;	
 
         overflow-x: none; /* прокрутка по горизонтали */
         overflow-y: scroll; /* прокрутка по вертикали */
     }
+	.MyBG {
+		background-color: #118EC7;
+		background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.5) 50%);
+		background-size: 50px 50px;	
+	}
+	body {
+		background-color: #FFFFEF;
+		background-image: 
+		linear-gradient(90deg, transparent 98px, #ED82AD 98px, #ED82AD 100px, transparent 100px),
+		linear-gradient(#eee 1px, transparent 0px),
+		linear-gradient(90deg, #eee 1px, transparent 0px);
+		background-size:100% 100%, 20px 20px, 20px 20px;
+		background-position: 0 0, -1px -1px, -1px 1px;
+		padding-left:100px;
+	}
     </style>
-
 </head>
 <body onload="init(getRooms);">
-
-<h1>Стартовая страница</h1>
-
-Вы вошли как <a href="/user/id${UserID}">${User}</a> <a href="javascript:exit()"> | Выйти наружу!</a>
+<p align="right">
+ <a href="/user/id${UserID}">${User}</a> <a href="javascript:exit()">|Выйти</a>
+</p>
 <p></p>
 
 <div id="showRoomOptions" style="display:none">
@@ -46,10 +63,10 @@
 
 <div id="startOptions">
 
-    <input type="button" value="Создать стол" onclick="createRoom()"/>
+   
 
 
-    <div>Список столов</div>
+    <div style="size:18">Список столов</div><br>
     <table><tbody><tr>
             <td style="width:100px">№ Комнаты</td>
             <td style="width:150px">Макс. кол-во игроков</td>
@@ -58,9 +75,74 @@
 
     <div id="tableList" class="MyScroll">
 
-    </div>
-    <input type="button" value="Обновить" onclick="getRooms()"/>
+    </div><p></p>
+    <span><input type="button" value="Обновить" onclick="getRooms()"/></span><span> <input type="button" value="Создать стол" onclick="createRoom()"/></span>
 </div>
+
+
+<div style="background-image:url(../img/pockerTable.jpeg); background-repeat:no-repeat; background-position: 10px">
+
+<p align="center">Список столов</p><br>
+
+<div class="myDiv">
+
+
+<table><tbody><tr>
+            <td style="width:200px">№ Комнаты</td>
+            <td style="width:250px">Макс. кол-во игроков</td>
+            <td style="width:250px">Статус</td>
+    </tr></tbody></table>
+<hr>
+
+<div style="overflow-y: scroll;width: 800px;height: 366px;padding-bottom: 0px;margin-top: -8px;background-color: rgba(0,0,0,0.1);">
+
+<a href="#" class="button">
+<table><tbody><tr>
+            <td style="width:200px">1</td>
+            <td style="width:250px">2</td>
+            <td style="width:250px">Ожидание игроков</td>
+    </tr></tbody></table>
+
+</a>
+<a href="#" class="button">
+<table><tbody><tr>
+            <td style="width:200px">2</td>
+            <td style="width:250px">3</td>
+            <td style="width:250px">Ожидание игроков</td>
+    </tr></tbody></table>
+
+</a>
+<a href="#" class="button">
+<table><tbody><tr>
+            <td style="width:200px">3</td>
+            <td style="width:250px">4</td>
+            <td style="width:250px">Ожидание игроков</td>
+    </tr></tbody></table>
+
+</a>
+<a href="#" class="button">
+<table><tbody><tr>
+            <td style="width:200px">4</td>
+            <td style="width:250px">1</td>
+            <td style="width:250px">Ожидание игроков</td>
+    </tr></tbody></table>
+</a>
+<div class="myTableCol">
+<a href="#" class="button">
+<table><tbody><tr>
+            <td style="width:200px">5</td>
+            <td style="width:250px">6</td>
+            <td style="width:250px">Ожидание игроков</td>
+    </tr></tbody></table>
+
+</a>
+</div>
+
+
+
+</div>
+
+</div></div>
 
 </body>
 </html>

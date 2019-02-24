@@ -63,6 +63,17 @@ function onJoinRoomHandler(data){
    var id = arr[key];
    users[id] = id;
   }
+
+  var players = data.players;
+  for (var key in players){
+     //console.log(arr[key]);
+     var id = players[key];
+     console.log("Create player avatar");
+     addDude(id);
+     //users[id] = id;
+  }
+
+
   showRoomUsers();
 }
 
@@ -74,12 +85,15 @@ function joinGame(){
 }
 
 function onUserJoinGame(data){
+
     if(data.user == userId){
         console.log("Fuck");
         connectButton.style.display = "none";
     }
      var messageField = document.getElementById("messages");
      messageField.value += "System: " + data.user + " присоединился к игре." + '\n';
+     addDude(data.user);
+     drawDudes();
 }
 
 function changeGameStatusHandler(data){

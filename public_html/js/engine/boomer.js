@@ -97,7 +97,12 @@
 				sprite.addImage(loader.getImage(id));
 				stage.addChild(sprite);
 				return sprite;
-			}			
+			},
+		    text: function(){
+		        var text = new TextField();
+		        //stage.addChild(text);
+		        return text;
+		    }
 		},
 		
 		update: function(){			

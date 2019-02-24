@@ -81,7 +81,7 @@
 		addChild: function(displayObject){
 			
 			if(displayObject.bitmap == null){
-				console.log("Cannot load image");
+				console.log(displayObject + ": Cannot load image");
 				return;
 			}
 			

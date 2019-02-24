@@ -32,11 +32,6 @@
 	boomer.setLoadImagesHandler(main);
 	boomer.loadImages(["cavcaz_bg.png", "fox.png", "bear.png", "logo.png", "red.png", "space3.png", "coin.png", "inv_button.png", "exit_button.png"]);
 	
-	function bind(func, context) {
-		return function() { // (*)
-			return func.apply(context, arguments);
-		};
-	}
 	
 	var requestAnimFrame = (function(){
     return window.requestAnimationFrame       ||

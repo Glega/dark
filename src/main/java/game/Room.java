@@ -136,6 +136,14 @@ public class Room {
         return logins;
     }
 
+    public Set<String> getPlayersToString(){
+        Set<String> logins = Collections.newSetFromMap(new ConcurrentHashMap<>());
+        for(Map.Entry<String, UserProfile> entry : players.entrySet()){
+            logins.add(entry.getKey());
+        }
+        return logins;
+    }
+
     public HashMap<String, String> createPacket(String method, String login, String[] args){
         HashMap<String, String> obj = new HashMap<>();
         obj.put("method", method);

@@ -31,16 +31,19 @@ function showRoomList(event){
               var col = document.createElement("td");
               col.innerHTML = data['roomCounter'];
               col.style.width = "100px";
+			  col.style.color = "white";
               row.appendChild(col);
 
               col = document.createElement("td");
               col.innerHTML = data['maxPlayers'];
               col.style.width = "150px";
+			  col.style.color = "white";
               row.appendChild(col);
 
               col = document.createElement("td");
               col.innerHTML = data['roomStatus'];
               col.style.width = "50px";
+			  col.style.color = "white";
               row.appendChild(col);
 
               if(s == 1){ row.style.backgroundColor = "#F5F5F5";s = 0}else{s++;}
@@ -116,8 +119,11 @@ function init(obj) {
     ws.onclose = function (event) {
     }
 
+  
 
 }
+
+
 
 function sendChatMessage(){
     var messageField = document.getElementById("message");

@@ -5,13 +5,13 @@
 
     <title>Игровая комната ID/${RoomID}</title>
     <script type="text/javascript" src="/game.js"></script>
-
     <script type="text/javascript" src="/js/engine/boomer.js"></script>
     <script type="text/javascript" src="/js/engine/loader.js"></script>
     <script type="text/javascript" src="/js/engine/Bitmap.js"></script>
     <script type="text/javascript" src="/js/engine/Stage.js"></script>
     <script type="text/javascript" src="/js/engine/shape.js"></script>
     <script type="text/javascript" src="/js/engine/sprite.js"></script>
+    <script type="text/javascript" src="/js/engine/textField.js"></script>
     <script type="text/javascript" src="/js/gameFrame.js"></script>
 
 
@@ -36,7 +36,7 @@
             initParams();
             boomer = new Boomer({width:800, height:600, container:"main-scene"});
             boomer.setLoadImagesHandler(main);
-            boomer.loadImages(["/img/wall.jpg"]);
+            boomer.loadImages(["/img/wall.jpg", "/img/exit_button.png", "/img/play_button.png", "/img/dude.png"]);
             var server = window.location.href.substr(7, document.location.href.length).split("/")[0];
 
             ws = new WebSocket("ws://" + server + "/api");

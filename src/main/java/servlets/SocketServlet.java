@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 
 /**
  * Created by Worker2 on 24.10.2017.
+ * фывфывывфвфывфывфывфывфвфывфывфывфыв
  */
 @WebServlet(name="SocketServlet", urlPatterns = {"/api"})
 public class SocketServlet extends WebSocketServlet{

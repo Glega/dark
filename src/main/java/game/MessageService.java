@@ -110,6 +110,7 @@ public class MessageService {
                 registerSocket(profile, socket);
                 //profile.setInGameStatus(UserProfile.PLAYER_READY);
                 responseJSON.put("method", "onJoinRoomHandler");
+                responseJSON.put("players", room.getPlayersToString());
                 responseJSON.put("spectators", room.getUsersToString());
                 sendMessageTo(roomId, responseJSON.toJSONString());
                 break;

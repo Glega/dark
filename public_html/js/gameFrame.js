@@ -1,3 +1,40 @@
+var dudes = 0;
+var dudesArray = {};
+
+function addDude(id){
+
+    if(dudesArray[id]){
+        console.log("Dude exist");
+        return;
+    }
+
+    dudesArray[id] = {};
+
+
+}
+
+function drawDudes(){
+    dudes = 0;
+
+    for(var key in dudesArray){
+       var dude = boomer.add.image("/img/dude.png");
+       dude.x = 240 * dudes;
+       dude.y = 350;
+
+       dude.width = 220;
+       dude.height = 220;
+       dudesArray[key].src = dude;
+       dudes++;
+
+       var msg = boomer.add.text();
+       msg.setText(key);
+       dude.addChild(msg);
+       console.log("Text = " + msg.getText());
+
+    }
+}
+
+
 
 
 	function bind(func, context) {
@@ -20,21 +57,79 @@
 
 
 	function main(){
-
 		var bg = boomer.add.image("/img/wall.jpg");
 		bg.width = 800;
 		bg.height = 600;
 		bg.addEventListener("mousedown", function(e){
 			console.log("it is BG!!!");
 		});
-		update();
 
+
+
+        drawDudes();
+        showUI();
+		update();
 	}
 
 	function update(){
 		boomer.update();
 		requestAnimFrame(update);
 	}
+
+	function showUI(){
+	    var exitButton = boomer.add.sprite("/img/exit_button.png");
+        		exitButton.width = 100;
+                exitButton.height = 100;
+                exitButton.init({
+                    width: 100,
+                    height: 100,
+                    x:0,
+                    y:0,
+                    pause: true
+                });
+
+                exitButton.addEventListener("mousedown", function(e){
+
+                    exitRoom();
+                });
+
+                exitButton.addEventListener("mousemove", function(e){
+                    var dx = e.target.x - e.mouseX;
+                    var dy = e.target.y - e.mouseY;
+
+                    if(Math.abs(dx) < 100 && Math.abs(dy) < 100) e.target.setPosY(1);
+                    else e.target.setPosY(0);
+
+                });
+
+	    var playButton = boomer.add.sprite("/img/play_button.png");
+        		playButton.width = 500;
+                playButton.height = 220;
+                playButton.x = 100;
+                playButton.y = 200;
+                playButton.init({
+                    width: 500,
+                    height: 220,
+                    x:0,
+                    y:0,
+                    pause: true
+                });
+
+                playButton.addEventListener("mousedown", function(e){
+                    e.target.remove();
+                    joinGame();
+                });
+
+                playButton.addEventListener("mousemove", function(e){
+                    var dx = e.mouseX - e.target.x;
+                    var dy = e.mouseY - e.target.y;
+
+                    if(dx < 500 && dy < 220 && dx > 0 && dy > 0) e.target.setPosY(1);
+                    else e.target.setPosY(0);
+
+                });
+	}
+
 
 	function SimpleShape(){
 		this.x = 0;

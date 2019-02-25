@@ -63,86 +63,27 @@
 
 <div id="startOptions">
 
-   
 
 
-    <div style="size:18">Список столов</div><br>
-    <table><tbody><tr>
-            <td style="width:100px">№ Комнаты</td>
-            <td style="width:150px">Макс. кол-во игроков</td>
-            <td style="width:50px">Статус</td>
-    </tr></tbody></table>
 
-    <div id="tableList" class="MyScroll">
+    <p align="center">Список столов</p><br>
 
-    </div><p></p>
-    <span><input type="button" value="Обновить" onclick="getRooms()"/></span><span> <input type="button" value="Создать стол" onclick="createRoom()"/></span>
-</div>
+    <div class="myDiv">
 
-
-<div style="background-image:url(../img/pockerTable.jpeg); background-repeat:no-repeat; background-position: 10px">
-
-<p align="center">Список столов</p><br>
-
-<div class="myDiv">
-
-
-<table><tbody><tr>
+        <table><tbody><tr>
             <td style="width:200px">№ Комнаты</td>
             <td style="width:250px">Макс. кол-во игроков</td>
             <td style="width:250px">Статус</td>
-    </tr></tbody></table>
-<hr>
-
-<div style="overflow-y: scroll;width: 800px;height: 366px;padding-bottom: 0px;margin-top: -8px;background-color: rgba(0,0,0,0.1);">
-
-<a href="#" class="button">
-<table><tbody><tr>
-            <td style="width:200px">1</td>
-            <td style="width:250px">2</td>
-            <td style="width:250px">Ожидание игроков</td>
-    </tr></tbody></table>
-
-</a>
-<a href="#" class="button">
-<table><tbody><tr>
-            <td style="width:200px">2</td>
-            <td style="width:250px">3</td>
-            <td style="width:250px">Ожидание игроков</td>
-    </tr></tbody></table>
-
-</a>
-<a href="#" class="button">
-<table><tbody><tr>
-            <td style="width:200px">3</td>
-            <td style="width:250px">4</td>
-            <td style="width:250px">Ожидание игроков</td>
-    </tr></tbody></table>
-
-</a>
-<a href="#" class="button">
-<table><tbody><tr>
-            <td style="width:200px">4</td>
-            <td style="width:250px">1</td>
-            <td style="width:250px">Ожидание игроков</td>
-    </tr></tbody></table>
-</a>
-<div class="myTableCol">
-<a href="#" class="button">
-<table><tbody><tr>
-            <td style="width:200px">5</td>
-            <td style="width:250px">6</td>
-            <td style="width:250px">Ожидание игроков</td>
-    </tr></tbody></table>
-
-</a>
-</div>
+        </tr></tbody></table>
+        <hr>
+        <div style="overflow-y: scroll;width: 800px;height: 366px;padding-bottom: 0px;margin-top: -8px;background-color: rgba(0,0,0,0.1);" id="tableList">
 
 
+        </div>
+        </div>
+    <span><input type="button" value="Обновить" onclick="getRooms()"/></span><span> <input type="button" value="Создать стол" onclick="createRoom()"/></span>
 
-</div>
 
-</div></div>
 
 </body>
 </html>

@@ -14,50 +14,52 @@ function showRoomList(event){
     var rsp = JSON.parse(event.data);
     var tableDiv = document.getElementById("tableList");
     tableDiv.innerHTML = "";
-    var table = document.createElement("table");
-    table.id = "roomList";
-    var headRow = document.createElement("tr");
-    table.appendChild(headRow);
+
+
 
     var s = 0;
     for(var key in rsp){
             if(rsp.hasOwnProperty(key)){
+               var data = rsp[key];
+
+               var headBlock = document.createElement('a');
+               headBlock.setAttribute('class', 'button');
+               headBlock.setAttribute("href", "javascript:connectRoom('" + data["roomId"] + "');");
+
+               var table = document.createElement("table");
+               table.id = "roomList";
+               var headRow = document.createElement("tr");
+               table.appendChild(headRow);
 
               var row = document.createElement("tr");
 
               table.appendChild(row);
-              var data = rsp[key];
+
 
               var col = document.createElement("td");
               col.innerHTML = data['roomCounter'];
-              col.style.width = "100px";
+              col.style.width = "200px";
 			  col.style.color = "white";
               row.appendChild(col);
 
               col = document.createElement("td");
               col.innerHTML = data['maxPlayers'];
-              col.style.width = "150px";
+              col.style.width = "250px";
 			  col.style.color = "white";
               row.appendChild(col);
 
               col = document.createElement("td");
-              col.innerHTML = data['roomStatus'];
-              col.style.width = "50px";
+              col.innerHTML = "Игра";
+              if(data['roomStatus'] == "NOT_GAME") col.innerHTML = "Ожидание игроков";
+              col.style.width = "250px";
 			  col.style.color = "white";
               row.appendChild(col);
 
-              if(s == 1){ row.style.backgroundColor = "#F5F5F5";s = 0}else{s++;}
-
-              var link = document.createElement("a");
-              link.href = "javascript:connectRoom('" + data["roomId"] + "');";
-              link.innerHTML = "Connect...";
-              var tdLink = document.createElement("td");
-              tdLink.appendChild(link);
-              row.appendChild(tdLink);
-
+              headBlock.appendChild(table);
+              tableDiv.appendChild(headBlock);
             }
     }
-    tableDiv.appendChild(table);
+
 
 }
 
